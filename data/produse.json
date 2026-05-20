@@ -1,1 +1,45 @@
-[]
+[
+    {
+        "@type": "fix",
+        "id": 1,
+        "nume": "Tastatură Mecanică",
+        "pret": 300.0,
+        "descriere": "RGB, switch-uri albastre",
+        "vanzatorEmail": "v1@test.com"
+    },
+    {
+        "@type": "negociabil",
+        "id": 2,
+        "nume": "Monitor 4K",
+        "pret": 1500.0,
+        "descriere": "32 inch, IPS",
+        "vanzatorEmail": "v1@test.com",
+        "pretMinim": 1200.0
+    },
+    {
+        "@type": "fix",
+        "id": 3,
+        "nume": "Mouse Vertical",
+        "pret": 150.0,
+        "descriere": "Ergonomic, wireless",
+        "vanzatorEmail": "v3@test.com"
+    },
+    {
+        "@type": "negociabil",
+        "id": 4,
+        "nume": "Placă Video RTX 3060",
+        "pret": 2000.0,
+        "descriere": "12GB VRAM",
+        "vanzatorEmail": "v3@test.com",
+        "pretMinim": 1700.0
+    },
+    {
+        "@type": "negociabil",
+        "id": 5,
+        "nume": "Scaun Gaming",
+        "pret": 800.0,
+        "descriere": "Piele sintetică, reglabil",
+        "vanzatorEmail": "v1@test.com",
+        "pretMinim": 650.0
+    }
+]

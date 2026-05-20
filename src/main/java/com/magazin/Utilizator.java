@@ -22,9 +22,19 @@ public abstract class Utilizator {
         this.parola = parola;
     }
 
-    public String getEmail() { return email; }
-    public String getParola() { return parola; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) { this.email = email; }
-    public void setParola(String parola) { this.parola = parola; }
+    public String getParola() {
+        return parola;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setParola(String parola) {
+        this.parola = parola;
+    }
 }

@@ -8,6 +8,12 @@ public class Main {
     public static void main(String[] args) {
         SistemManager manager = SistemManager.getInstanta();
 
+        // Înregistrăm un Shutdown Hook pentru a salva datele automat la închiderea
+        // programului
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            salveazaToateDatele(manager);
+        }));
+
         try {
             List<Produs> produseIncarcate = DataService.incarcaProduse();
             if (produseIncarcate != null)
@@ -73,15 +79,8 @@ public class Main {
                     break;
                 case 0:
                     running = false;
-                    try {
-                        DataService.salveazaProduse(manager.getProduse());
-                        DataService.salveazaUtilizatori(manager.getUtilizatori());
-                        DataService.salveazaOferte(manager.getOferteActive());
-                        DataService.salveazaIstoric(manager.getIstoricVanzari());
-                        System.out.println("Date salvate cu succes!");
-                    } catch (IOException ex) {
-                        System.out.println("Eroare la salvare: " + ex.getMessage());
-                    }
+                    System.out.println("Se închide aplicația...");
+                    // Salvarea se va face automat prin Shutdown Hook
                     break;
             }
         }
@@ -100,8 +99,9 @@ public class Main {
                 }
                 int opt = sc.nextInt();
                 sc.nextLine();
-                if (opt == 0) { logat = false; }
-                else if (opt == 1) {
+                if (opt == 0) {
+                    logat = false;
+                } else if (opt == 1) {
                     sm.getVanzatoriNeaprobati().forEach(v -> System.out.println(v.getEmail()));
                     System.out.print("Email de aprobat: ");
                     sm.setStatusVanzator(sc.nextLine(), true);
@@ -117,8 +117,9 @@ public class Main {
                 }
                 int opt = sc.nextInt();
                 sc.nextLine();
-                if (opt == 0) { logat = false; }
-                else if (opt == 1) {
+                if (opt == 0) {
+                    logat = false;
+                } else if (opt == 1) {
                     System.out.println("\n--- Lista Produse ---");
                     sm.getProduse()
                             .forEach(p -> System.out.println("Produs: " + p.getNume() + " | Pret: " + p.getPret()
@@ -227,6 +228,18 @@ public class Main {
                         break;
                 }
             }
+        }
+    }
+
+    private static void salveazaToateDatele(SistemManager manager) {
+        try {
+            DataService.salveazaProduse(manager.getProduse());
+            DataService.salveazaUtilizatori(manager.getUtilizatori());
+            DataService.salveazaOferte(manager.getOferteActive());
+            DataService.salveazaIstoric(manager.getIstoricVanzari());
+            System.out.println("\n[SISTEM] Toate datele au fost salvate în siguranță!");
+        } catch (IOException e) {
+            System.err.println("\n[EROARE] Nu s-au putut salva datele la închidere: " + e.getMessage());
         }
     }
 }

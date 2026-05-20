@@ -34,19 +34,21 @@ public class SistemManager {
         Produs.setIdCounter(0);
     }
 
+    // Modifică temporar metoda login în SistemManager.java
     public Utilizator login(String email, String parola) {
         for (Utilizator u : utilizatori) {
             if (u.getEmail().equals(email) && u.getParola().equals(parola)) {
-                // Verificare specială pentru vânzători (cerința i)
+                System.out.println("User gasit: " + u.getEmail()); // DEBUG
                 if (u instanceof Vanzator) {
+                    System.out.println("Vanzator aprobat? " + ((Vanzator) u).isContAprobat()); // DEBUG
                     if (!((Vanzator) u).isContAprobat()) {
-                        System.out.println("Contul vanzatorului este inactiv sau neaprobat!");
                         return null;
                     }
                 }
                 return u;
             }
         }
+        System.out.println("User sau parola incorecta."); // DEBUG
         return null;
     }
 
@@ -205,7 +207,7 @@ public class SistemManager {
     }
 
     public void setUtilizatori(List<Utilizator> utilizatori) {
-        if (utilizatori != null && !utilizatori.isEmpty()) {
+        if (utilizatori != null) {
             this.utilizatori = utilizatori;
             // Ne asigurăm că administratorul default există mereu dacă lista e nouă
             if (utilizatori.stream().noneMatch(u -> u.getEmail().equals("admin@email.com"))) {

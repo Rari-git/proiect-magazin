@@ -1,24 +1,35 @@
 [
     {
+        "@type": "admin",
         "email": "admin@email.com",
         "parola": "admin"
     },
     {
-        "email": "vanzator1@test.com",
-        "parola": "parola123",
+        "@type": "vanzator",
+        "email": "v1@test.com",
+        "parola": "pass1",
         "contAprobat": true
     },
     {
-        "email": "vanzator_nou@test.com",
-        "parola": "parola123",
+        "@type": "vanzator",
+        "email": "v2@test.com",
+        "parola": "pass2",
         "contAprobat": false
     },
     {
-        "email": "client1@test.com",
-        "parola": "parola123"
+        "@type": "vanzator",
+        "email": "v3@test.com",
+        "parola": "pass3",
+        "contAprobat": true
     },
     {
-        "email": "client2@test.com",
-        "parola": "parola123"
+        "@type": "cumparator",
+        "email": "c1@test.com",
+        "parola": "pass1"
+    },
+    {
+        "@type": "cumparator",
+        "email": "c2@test.com",
+        "parola": "pass2"
     }
 ]
