@@ -122,9 +122,11 @@ public class Main {
                 } else if (opt == 1) {
                     System.out.println("\n--- Lista Produse ---");
                     sm.getProduse()
-                            .forEach(p -> System.out.println("Produs: " + p.getNume() + " | Pret: " + p.getPret()
-                                    + " EUR | Vanzator: " + p.getVanzatorEmail() + "\n   Descriere: " + p.getDescriere()
-                                    + "\n   [Selectati folosind ID: " + p.getId() + "]"));
+                            .forEach(p -> {
+                                String tip = (p instanceof ProdusFix) ? "FIX" : "NEGOCIABIL";
+                                System.out.println("[" + tip + "] ID: " + p.getId() + " | " + p.getNume() + " | Pret: " + p.getPret()
+                                    + " EUR | Vanzator: " + p.getVanzatorEmail() + "\n   Descriere: " + p.getDescriere());
+                            });
                 } else if (opt == 2) {
                     System.out.print("ID Produs: ");
                     while (!sc.hasNextInt()) {
