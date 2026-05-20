@@ -31,6 +31,8 @@ public abstract class Produs {
     // Setter pentru id necesar pentru ca Jackson să poată restaura ID-ul salvat
     public void setId(int id) { this.id = id; }
 
+    public static void setIdCounter(int value) { idCounter = value; }
+
     public String getNume() { return nume; }
     public double getPret() { return pret; }
     public String getVanzatorEmail() { return vanzatorEmail; }

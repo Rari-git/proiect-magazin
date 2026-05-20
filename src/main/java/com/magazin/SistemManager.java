@@ -59,27 +59,37 @@ public class SistemManager {
     }
 
     public void setStatusVanzator(String email, boolean status) {
+        boolean gasit = false;
         for (Utilizator u : utilizatori) {
             if (u instanceof Vanzator && u.getEmail().equals(email)) {
                 ((Vanzator) u).setContAprobat(status);
+                gasit = true;
+                System.out.println("Contul vanzatorului " + email + (status ? " a fost activat." : " a fost dezactivat."));
             }
         }
+        if (!gasit) System.out.println("Eroare: Vanzatorul cu email-ul " + email + " nu a fost gasit.");
     }
 
     public boolean proceseazaOferta(int idProdus, String emailCumparator, double pretPropus) {
         for (Produs p : produse) {
-            if (p.getId() == idProdus && p instanceof ProdusNegociabil) {
-                ProdusNegociabil pn = (ProdusNegociabil) p;
-                if (pretPropus >= pn.getPretMinim()) {
-                    oferteActive.add(new Oferta(idProdus, emailCumparator, pretPropus));
-                    System.out.println("Oferta a fost trimisa vanzatorului.");
-                    return true;
+            if (p.getId() == idProdus) {
+                if (p instanceof ProdusNegociabil) {
+                    ProdusNegociabil pn = (ProdusNegociabil) p;
+                    if (pretPropus >= pn.getPretMinim()) {
+                        oferteActive.add(new Oferta(idProdus, emailCumparator, pretPropus));
+                        System.out.println("Oferta a fost trimisa vanzatorului.");
+                        return true;
+                    } else {
+                        System.out.println("Oferta refuzata automat (sub pretul minim setat de vanzator).");
+                        return false;
+                    }
                 } else {
-                    System.out.println("Oferta refuzata automat (sub pretul minim setat de vanzator).");
+                    System.out.println("Acest produs are pret fix si nu accepta oferte.");
                     return false;
                 }
             }
         }
+        System.out.println("Produsul nu a fost gasit.");
         return false;
     }
     
@@ -93,8 +103,12 @@ public class SistemManager {
         }
         if(produsul != null) {
             finalizeazaVanzare(produsul, o.getEmailCumparator(), o.getPretPropus());
-            oferteActive.removeIf(of -> of.getIdProdus() == o.getIdProdus());
         }
+    }
+
+    public void respingeOferta(Oferta o) {
+        oferteActive.remove(o);
+        System.out.println("Oferta a fost respinsa/anulata.");
     }
 
     public void cumparaProdusFix(int idProdus, String emailCumparator) {
@@ -127,7 +141,21 @@ public class SistemManager {
     }
 
     public void adaugaProdus(Produs p) { if (p != null) this.produse.add(p); }
-    public void setProduse(List<Produs> produse) { if (produse != null) this.produse = produse; }
+    public void setProduse(List<Produs> produse) { 
+        if (produse != null) {
+            this.produse = produse;
+            actualizeazaIdCounter();
+        }
+    }
+
+    private void actualizeazaIdCounter() {
+        int maxId = 0;
+        for (Produs p : produse) {
+            if (p.getId() > maxId) maxId = p.getId();
+        }
+        Produs.setIdCounter(maxId);
+    }
+
     public List<Produs> getProduse() { return produse; }
 
     public List<Oferta> getOferteActive() { return oferteActive; }

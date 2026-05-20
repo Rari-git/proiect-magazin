@@ -87,7 +87,8 @@ public class Main {
             System.out.println("1. Vizualizeaza produse, 2. Cumpara pret fix, 3. Fa oferta negociabil");
             int opt = sc.nextInt(); sc.nextLine();
             if (opt == 1) {
-                sm.getProduse().forEach(p -> System.out.println(p.getId() + ": " + p.getNume() + " | " + p.getDescriere() + " | Pret: " + p.getPret()));
+                System.out.println("\n--- Lista Produse ---");
+                sm.getProduse().forEach(p -> System.out.println("Produs: " + p.getNume() + " | Pret: " + p.getPret() + " EUR | Vanzator: " + p.getVanzatorEmail() + "\n   Descriere: " + p.getDescriere() + "\n   [Selectati folosind ID: " + p.getId() + "]"));
             } else if (opt == 2) {
                 System.out.print("ID Produs: "); int id = sc.nextInt();
                 sm.cumparaProdusFix(id, u.getEmail());
@@ -116,9 +117,16 @@ public class Main {
                 case 3:
                     List<Oferta> oferte = sm.getOfertePentruVanzator(u.getEmail());
                     for (int i = 0; i < oferte.size(); i++) System.out.println(i + ". " + oferte.get(i));
-                    System.out.print("Aproba oferta (index) sau -1: ");
+                    System.out.print("Selectati index oferta (sau -1): ");
                     int idx = sc.nextInt();
-                    if (idx >= 0 && idx < oferte.size()) sm.aprobaOferta(oferte.get(idx));
+                    if (idx >= 0 && idx < oferte.size()) {
+                        System.out.println("1. Aproba, 2. Respinge/Anula");
+                        int decizie = sc.nextInt();
+                        if (decizie == 1) 
+                            sm.aprobaOferta(oferte.get(idx));
+                        else if (decizie == 2)
+                            sm.respingeOferta(oferte.get(idx));
+                    }
                     break;
                 case 4:
                     System.out.print("ID Produs de anulat: ");
