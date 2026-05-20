@@ -2,6 +2,7 @@ package com.magazin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SistemManager {
     private static SistemManager instanta;
@@ -19,10 +20,19 @@ public class SistemManager {
         utilizatori.add(new Administrator("admin@email.com", "admin"));
     }
 
-    public static SistemManager getInstanta() {
+    public static synchronized SistemManager getInstanta() {
         if (instanta == null)
             instanta = new SistemManager();
         return instanta;
+    }
+
+    public void reset() {
+        this.utilizatori.clear();
+        this.produse.clear();
+        this.istoricVanzari.clear();
+        this.oferteActive.clear();
+        this.utilizatori.add(new Administrator("admin@email.com", "admin"));
+        Produs.setIdCounter(0);
     }
 
     public Utilizator login(String email, String parola) {
@@ -201,14 +211,9 @@ public class SistemManager {
     }
 
     public List<Oferta> getOfertePentruVanzator(String emailVanzator) {
-        List<Oferta> filtrate = new ArrayList<>();
-        for (Oferta o : oferteActive) {
-            for (Produs p : produse) {
-                if (p.getId() == o.getIdProdus() && p.getVanzatorEmail().equals(emailVanzator)) {
-                    filtrate.add(o);
-                }
-            }
-        }
-        return filtrate;
+        return oferteActive.stream()
+                .filter(o -> produse.stream()
+                        .anyMatch(p -> p.getId() == o.getIdProdus() && p.getVanzatorEmail().equals(emailVanzator)))
+                .collect(Collectors.toList());
     }
 }
