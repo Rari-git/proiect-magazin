@@ -7,10 +7,14 @@ public class SistemManager {
     private static SistemManager instanta;
     private List<Utilizator> utilizatori;
     private List<Produs> produse;
+    private List<String> istoricVanzari;
+    private List<Oferta> oferteActive;
 
     private SistemManager() {
         this.utilizatori = new ArrayList<>();
         this.produse = new ArrayList<>();
+        this.istoricVanzari = new ArrayList<>();
+        this.oferteActive = new ArrayList<>();
         // Administratorul default
         utilizatori.add(new Administrator("admin@email.com", "admin"));
     }
@@ -27,7 +31,7 @@ public class SistemManager {
                 // Verificare specială pentru vânzători (cerința i)
                 if (u instanceof Vanzator) {
                     if (!((Vanzator) u).isContAprobat()) {
-                        System.out.println("Contul vânzătorului nu este aprobat!");
+                        System.out.println("Contul vanzatorului este inactiv sau neaprobat!");
                         return null;
                     }
                 }
@@ -37,35 +41,103 @@ public class SistemManager {
         return null;
     }
 
-    // În SistemManager.java
+    public void inregistrare(Utilizator u) {
+        this.utilizatori.add(u);
+        if (u instanceof Cumparator) {
+            System.out.println("Cont cumparator creat cu succes.");
+        } else {
+            System.out.println("Cerere trimisa. Contul de vanzator asteapta aprobarea adminului.");
+        }
+    }
+
+    public List<Vanzator> getVanzatoriNeaprobati() {
+        List<Vanzator> lista = new ArrayList<>();
+        for (Utilizator u : utilizatori) {
+            if (u instanceof Vanzator && !((Vanzator) u).isContAprobat()) lista.add((Vanzator) u);
+        }
+        return lista;
+    }
+
+    public void setStatusVanzator(String email, boolean status) {
+        for (Utilizator u : utilizatori) {
+            if (u instanceof Vanzator && u.getEmail().equals(email)) {
+                ((Vanzator) u).setContAprobat(status);
+            }
+        }
+    }
 
     public boolean proceseazaOferta(int idProdus, String emailCumparator, double pretPropus) {
         for (Produs p : produse) {
             if (p.getId() == idProdus && p instanceof ProdusNegociabil) {
                 ProdusNegociabil pn = (ProdusNegociabil) p;
-
-                // Logica: Dacă oferta e peste prețul minim, e acceptată (cerința d)
                 if (pretPropus >= pn.getPretMinim()) {
-                    System.out.println("Oferta acceptata!");
-                    // Aici ar trebui să apelezi logica de cumpărare (cerința g)
-                    finalizeazaVanzare(pn, emailCumparator, pretPropus);
+                    oferteActive.add(new Oferta(idProdus, emailCumparator, pretPropus));
+                    System.out.println("Oferta a fost trimisa vanzatorului.");
                     return true;
                 } else {
-                    System.out.println("Oferta refuzata automat (sub pretul minim).");
+                    System.out.println("Oferta refuzata automat (sub pretul minim setat de vanzator).");
                     return false;
                 }
             }
         }
         return false;
     }
-
-    private void finalizeazaVanzare(Produs p, String cumparator, double pret) {
-        System.out.println("Produs vandut lui " + cumparator + " cu pretul " + pret);
-        produse.remove(p); // Șterge din sistem (cerința g)
+    
+    public void aprobaOferta(Oferta o) {
+        Produs produsul = null;
+        for(Produs p : produse) {
+            if(p.getId() == o.getIdProdus()) {
+                produsul = p;
+                break;
+            }
+        }
+        if(produsul != null) {
+            finalizeazaVanzare(produsul, o.getEmailCumparator(), o.getPretPropus());
+            oferteActive.removeIf(of -> of.getIdProdus() == o.getIdProdus());
+        }
     }
 
-    // Metodă pentru a adăuga un produs (cerința e)
-    public void adaugaProdus(Produs p) {
-        this.produse.add(p);
+    public void cumparaProdusFix(int idProdus, String emailCumparator) {
+        Produs gasit = null;
+        for (Produs p : produse) {
+            if (p.getId() == idProdus && p instanceof ProdusFix) {
+                gasit = p;
+                break;
+            }
+        }
+        if (gasit != null) {
+            finalizeazaVanzare(gasit, emailCumparator, gasit.getPret());
+        } else {
+            System.out.println("Produsul nu a fost gasit sau nu este cu pret fix.");
+        }
+    }
+
+    public void anuleazaVanzare(int idProdus, String emailVanzator) {
+        produse.removeIf(p -> p.getId() == idProdus && p.getVanzatorEmail().equals(emailVanzator));
+        oferteActive.removeIf(o -> o.getIdProdus() == idProdus);
+        System.out.println("Vanzarea a fost anulata.");
+    }
+
+    private void finalizeazaVanzare(Produs p, String cumparator, double pret) {
+        String record = "Produs: " + p.getNume() + " | Cumparator: " + cumparator + " | Pret: " + pret;
+        istoricVanzari.add(record); // Cerinta g
+        oferteActive.removeIf(o -> o.getIdProdus() == p.getId()); // Sterge ofertele (Cerinta g)
+        produse.remove(p); // Șterge din sistem (cerința g)
+        System.out.println("Tranzactie finalizata!");
+    }
+
+    public void adaugaProdus(Produs p) { if (p != null) this.produse.add(p); }
+    public void setProduse(List<Produs> produse) { if (produse != null) this.produse = produse; }
+    public List<Produs> getProduse() { return produse; }
+    public List<Oferta> getOfertePentruVanzator(String emailVanzator) {
+        List<Oferta> filtrate = new ArrayList<>();
+        for (Oferta o : oferteActive) {
+            for (Produs p : produse) {
+                if (p.getId() == o.getIdProdus() && p.getVanzatorEmail().equals(emailVanzator)) {
+                    filtrate.add(o);
+                }
+            }
+        }
+        return filtrate;
     }
 }

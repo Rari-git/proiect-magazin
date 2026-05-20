@@ -1,5 +1,14 @@
 package com.magazin;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Administrator.class, name = "admin"),
+    @JsonSubTypes.Type(value = Vanzator.class, name = "vanzator"),
+    @JsonSubTypes.Type(value = Cumparator.class, name = "cumparator")
+})
 public abstract class Utilizator {
     private String email;
     private String parola;
