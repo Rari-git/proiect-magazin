@@ -22,11 +22,9 @@ public abstract class Utilizator {
         this.parola = parola;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
+    public String getParola() { return parola; }
 
-    public String getParola() {
-        return parola;
-    } // Adăugat getter-ul
+    public void setEmail(String email) { this.email = email; }
+    public void setParola(String parola) { this.parola = parola; }
 }

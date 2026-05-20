@@ -32,9 +32,11 @@ public class Oferta {
         return aprobata;
     }
 
-    public void setAprobata(boolean aprobata) {
-        this.aprobata = aprobata;
-    }
+    public void setAprobata(boolean aprobata) { this.aprobata = aprobata; }
+
+    public void setIdProdus(int idProdus) { this.idProdus = idProdus; }
+    public void setEmailCumparator(String emailCumparator) { this.emailCumparator = emailCumparator; }
+    public void setPretPropus(double pretPropus) { this.pretPropus = pretPropus; }
 
     @Override
     public String toString() {

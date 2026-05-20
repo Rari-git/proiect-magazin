@@ -14,4 +14,6 @@ public class ProdusNegociabil extends Produs {
     public double getPretMinim() {
         return pretMinim;
     }
+
+    public void setPretMinim(double pretMinim) { this.pretMinim = pretMinim; }
 }

@@ -16,7 +16,6 @@ public class SistemManager {
         this.produse = new ArrayList<>();
         this.istoricVanzari = new ArrayList<>();
         this.oferteActive = new ArrayList<>();
-        // Administratorul default
         utilizatori.add(new Administrator("admin@email.com", "admin"));
     }
 
@@ -52,6 +51,11 @@ public class SistemManager {
     }
 
     public void inregistrare(Utilizator u) {
+        if (u.getEmail() == null || !u.getEmail().matches("^(.+)@(.+)$")) {
+            System.out.println("Eroare: Email-ul '" + u.getEmail() + "' este invalid (trebuie să conțină @).");
+            return;
+        }
+
         this.utilizatori.add(u);
         if (u instanceof Cumparator) {
             System.out.println("Cont cumparator creat cu succes.");

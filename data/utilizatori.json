@@ -1,1 +1,24 @@
-[{"email":"admin@email.com","parola":"admin"}]
+[
+    {
+        "email": "admin@email.com",
+        "parola": "admin"
+    },
+    {
+        "email": "vanzator1@test.com",
+        "parola": "parola123",
+        "contAprobat": true
+    },
+    {
+        "email": "vanzator_nou@test.com",
+        "parola": "parola123",
+        "contAprobat": false
+    },
+    {
+        "email": "client1@test.com",
+        "parola": "parola123"
+    },
+    {
+        "email": "client2@test.com",
+        "parola": "parola123"
+    }
+]
