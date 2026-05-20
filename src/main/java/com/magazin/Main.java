@@ -8,12 +8,21 @@ public class Main {
     public static void main(String[] args) {
         SistemManager manager = SistemManager.getInstanta();
         
-        // Incarcare date la pornire
         try {
             List<Produs> produseIncarcate = DataService.incarcaProduse();
             if (produseIncarcate != null) manager.setProduse(produseIncarcate);
+            
+            List<Utilizator> uInc = DataService.incarcaUtilizatori();
+            if (uInc != null) manager.setUtilizatori(uInc);
+
+            List<Oferta> oInc = DataService.incarcaOferte();
+            if (oInc != null) manager.setOferteActive(oInc);
+
+            List<String> iInc = DataService.incarcaIstoric();
+            if (iInc != null) manager.setIstoricVanzari(iInc);
+
         } catch (IOException e) {
-            System.out.println("Nu s-au putut incarca produsele: " + e.getMessage());
+            System.out.println("Eroare la incarcarea datelor: " + e.getMessage());
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -49,6 +58,9 @@ public class Main {
                     running = false;
                     try {
                         DataService.salveazaProduse(manager.getProduse());
+                        DataService.salveazaUtilizatori(manager.getUtilizatori());
+                        DataService.salveazaOferte(manager.getOferteActive());
+                        DataService.salveazaIstoric(manager.getIstoricVanzari());
                         System.out.println("Date salvate cu succes!");
                     } catch (IOException ex) {
                         System.out.println("Eroare la salvare: " + ex.getMessage());

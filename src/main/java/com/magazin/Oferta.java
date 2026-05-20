@@ -6,6 +6,8 @@ public class Oferta {
     private double pretPropus;
     private boolean aprobata;
 
+    public Oferta() {}
+
     public Oferta(int idProdus, String emailCumparator, double pretPropus) {
         this.idProdus = idProdus;
         this.emailCumparator = emailCumparator;

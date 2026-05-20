@@ -129,6 +129,23 @@ public class SistemManager {
     public void adaugaProdus(Produs p) { if (p != null) this.produse.add(p); }
     public void setProduse(List<Produs> produse) { if (produse != null) this.produse = produse; }
     public List<Produs> getProduse() { return produse; }
+
+    public List<Oferta> getOferteActive() { return oferteActive; }
+    public void setOferteActive(List<Oferta> oferte) { if (oferte != null) this.oferteActive = oferte; }
+    public List<String> getIstoricVanzari() { return istoricVanzari; }
+    public void setIstoricVanzari(List<String> istoric) { if (istoric != null) this.istoricVanzari = istoric; }
+
+    public List<Utilizator> getUtilizatori() { return utilizatori; }
+    public void setUtilizatori(List<Utilizator> utilizatori) {
+        if (utilizatori != null && !utilizatori.isEmpty()) {
+            this.utilizatori = utilizatori;
+            // Ne asigurăm că administratorul default există mereu dacă lista e nouă
+            if (utilizatori.stream().noneMatch(u -> u.getEmail().equals("admin@email.com"))) {
+                utilizatori.add(new Administrator("admin@email.com", "admin"));
+            }
+        }
+    }
+
     public List<Oferta> getOfertePentruVanzator(String emailVanzator) {
         List<Oferta> filtrate = new ArrayList<>();
         for (Oferta o : oferteActive) {
