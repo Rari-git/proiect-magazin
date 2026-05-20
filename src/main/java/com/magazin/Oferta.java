@@ -6,7 +6,8 @@ public class Oferta {
     private double pretPropus;
     private boolean aprobata;
 
-    public Oferta() {}
+    public Oferta() {
+    }
 
     public Oferta(int idProdus, String emailCumparator, double pretPropus) {
         this.idProdus = idProdus;
@@ -15,11 +16,25 @@ public class Oferta {
         this.aprobata = false;
     }
 
-    public int getIdProdus() { return idProdus; }
-    public String getEmailCumparator() { return emailCumparator; }
-    public double getPretPropus() { return pretPropus; }
-    public boolean isAprobata() { return aprobata; }
-    public void setAprobata(boolean aprobata) { this.aprobata = aprobata; }
+    public int getIdProdus() {
+        return idProdus;
+    }
+
+    public String getEmailCumparator() {
+        return emailCumparator;
+    }
+
+    public double getPretPropus() {
+        return pretPropus;
+    }
+
+    public boolean isAprobata() {
+        return aprobata;
+    }
+
+    public void setAprobata(boolean aprobata) {
+        this.aprobata = aprobata;
+    }
 
     @Override
     public String toString() {

@@ -5,5 +5,6 @@ public class ProdusFix extends Produs {
         super(nume, pret, descriere, vanzatorEmail);
     }
 
-    public ProdusFix() {}
+    public ProdusFix() {
+    }
 }

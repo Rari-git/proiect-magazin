@@ -53,7 +53,8 @@ public class SistemManager {
     public List<Vanzator> getVanzatoriNeaprobati() {
         List<Vanzator> lista = new ArrayList<>();
         for (Utilizator u : utilizatori) {
-            if (u instanceof Vanzator && !((Vanzator) u).isContAprobat()) lista.add((Vanzator) u);
+            if (u instanceof Vanzator && !((Vanzator) u).isContAprobat())
+                lista.add((Vanzator) u);
         }
         return lista;
     }
@@ -64,10 +65,12 @@ public class SistemManager {
             if (u instanceof Vanzator && u.getEmail().equals(email)) {
                 ((Vanzator) u).setContAprobat(status);
                 gasit = true;
-                System.out.println("Contul vanzatorului " + email + (status ? " a fost activat." : " a fost dezactivat."));
+                System.out.println(
+                        "Contul vanzatorului " + email + (status ? " a fost activat." : " a fost dezactivat."));
             }
         }
-        if (!gasit) System.out.println("Eroare: Vanzatorul cu email-ul " + email + " nu a fost gasit.");
+        if (!gasit)
+            System.out.println("Eroare: Vanzatorul cu email-ul " + email + " nu a fost gasit.");
     }
 
     public boolean proceseazaOferta(int idProdus, String emailCumparator, double pretPropus) {
@@ -92,16 +95,16 @@ public class SistemManager {
         System.out.println("Produsul nu a fost gasit.");
         return false;
     }
-    
+
     public void aprobaOferta(Oferta o) {
         Produs produsul = null;
-        for(Produs p : produse) {
-            if(p.getId() == o.getIdProdus()) {
+        for (Produs p : produse) {
+            if (p.getId() == o.getIdProdus()) {
                 produsul = p;
                 break;
             }
         }
-        if(produsul != null) {
+        if (produsul != null) {
             finalizeazaVanzare(produsul, o.getEmailCumparator(), o.getPretPropus());
         }
     }
@@ -140,8 +143,12 @@ public class SistemManager {
         System.out.println("Tranzactie finalizata!");
     }
 
-    public void adaugaProdus(Produs p) { if (p != null) this.produse.add(p); }
-    public void setProduse(List<Produs> produse) { 
+    public void adaugaProdus(Produs p) {
+        if (p != null)
+            this.produse.add(p);
+    }
+
+    public void setProduse(List<Produs> produse) {
         if (produse != null) {
             this.produse = produse;
             actualizeazaIdCounter();
@@ -151,19 +158,38 @@ public class SistemManager {
     private void actualizeazaIdCounter() {
         int maxId = 0;
         for (Produs p : produse) {
-            if (p.getId() > maxId) maxId = p.getId();
+            if (p.getId() > maxId)
+                maxId = p.getId();
         }
         Produs.setIdCounter(maxId);
     }
 
-    public List<Produs> getProduse() { return produse; }
+    public List<Produs> getProduse() {
+        return produse;
+    }
 
-    public List<Oferta> getOferteActive() { return oferteActive; }
-    public void setOferteActive(List<Oferta> oferte) { if (oferte != null) this.oferteActive = oferte; }
-    public List<String> getIstoricVanzari() { return istoricVanzari; }
-    public void setIstoricVanzari(List<String> istoric) { if (istoric != null) this.istoricVanzari = istoric; }
+    public List<Oferta> getOferteActive() {
+        return oferteActive;
+    }
 
-    public List<Utilizator> getUtilizatori() { return utilizatori; }
+    public void setOferteActive(List<Oferta> oferte) {
+        if (oferte != null)
+            this.oferteActive = oferte;
+    }
+
+    public List<String> getIstoricVanzari() {
+        return istoricVanzari;
+    }
+
+    public void setIstoricVanzari(List<String> istoric) {
+        if (istoric != null)
+            this.istoricVanzari = istoric;
+    }
+
+    public List<Utilizator> getUtilizatori() {
+        return utilizatori;
+    }
+
     public void setUtilizatori(List<Utilizator> utilizatori) {
         if (utilizatori != null && !utilizatori.isEmpty()) {
             this.utilizatori = utilizatori;

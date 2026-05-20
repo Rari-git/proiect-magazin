@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = ProdusFix.class, name = "fix"),
-    @JsonSubTypes.Type(value = ProdusNegociabil.class, name = "negociabil")
+        @JsonSubTypes.Type(value = ProdusFix.class, name = "fix"),
+        @JsonSubTypes.Type(value = ProdusNegociabil.class, name = "negociabil")
 })
 public abstract class Produs {
     private static int idCounter = 0;
@@ -25,16 +25,35 @@ public abstract class Produs {
     }
 
     // Constructor gol necesar pentru deserializarea JSON
-    public Produs() {}
+    public Produs() {
+    }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
+
     // Setter pentru id necesar pentru ca Jackson să poată restaura ID-ul salvat
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public static void setIdCounter(int value) { idCounter = value; }
+    public static void setIdCounter(int value) {
+        idCounter = value;
+    }
 
-    public String getNume() { return nume; }
-    public double getPret() { return pret; }
-    public String getVanzatorEmail() { return vanzatorEmail; }
-    public String getDescriere() { return descriere; }
+    public String getNume() {
+        return nume;
+    }
+
+    public double getPret() {
+        return pret;
+    }
+
+    public String getVanzatorEmail() {
+        return vanzatorEmail;
+    }
+
+    public String getDescriere() {
+        return descriere;
+    }
 }
